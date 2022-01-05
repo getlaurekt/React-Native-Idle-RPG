@@ -1,21 +1,78 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { StatusBar, Text, View, Image } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import styled from "styled-components/native";
+import { Ionicons } from "@expo/vector-icons";
+import HomeScreen from "./Screens/HomeScreen";
+import SearchScreen from "./Screens/SearchScreen";
 
-export default function App() {
+const Tab = createBottomTabNavigator();
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+    <>
+      <NavigationContainer>
+        <Tab.Navigator
+          backBehavior="history"
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+              if (route.name === "Home") {
+                iconName = focused ? "md-home" : "md-home-outline";
+              } else if (route.name === "Search") {
+                iconName = focused ? "search" : "search-outline";
+              }
+
+              // You can return any component that you like here!
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+            //tabBarShowLabel: false,
+            tabBarItemStyle: {
+              borderTopLeftRadius: 30,
+              borderTopRightRadius: 30,
+              paddingVertical: 5,
+              //backgroundColor: 'transparent'
+            },
+            tabBarStyle: {
+              borderTopColor: "#f1f1f1",
+              borderLeftColor: "#f1f1f1",
+              borderRightColor: "#f1f1f1",
+              //borderColor: 'grey',
+              borderTopWidth: 1,
+              borderLeftWidth: 1,
+              borderRightWidth: 1,
+              //borderRadius: 30,
+              borderTopLeftRadius: 30,
+              borderTopRightRadius: 30,
+              //backgroundColor: 'black',
+              //elevation: 0,
+              //position: 'absolute',
+              //left: 20,
+              //bottom: 20,
+              //right: 20
+            },
+            tabBarActiveTintColor: "#00b894",
+            tabBarInactiveTintColor: "gray",
+            //tabBarActiveBackgroundColor: 'crimson',
+            //tabBarInactiveBackgroundColor: 'crimson',
+          })}
+        >
+          <Tab.Screen
+            options={{ headerShown: false }}
+            name="Home"
+            component={HomeScreen}
+          />
+          <Tab.Screen
+            options={{ headerShown: false }}
+            name="Search"
+            component={SearchScreen}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </>
+  );
+};
+
+export default App;
